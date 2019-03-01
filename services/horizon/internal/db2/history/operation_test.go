@@ -144,3 +144,66 @@ func TestOperationIncludeFailed(t *testing.T) {
 	tt.Assert.NoError(err)
 	tt.Assert.Equal("SELECT hop.id, hop.transaction_id, hop.application_order, hop.type, hop.details, hop.source_account, ht.transaction_hash, ht.successful as transaction_successful FROM history_operations hop LEFT JOIN history_transactions ht ON ht.id = hop.transaction_id JOIN history_operation_participants hopp ON hopp.history_operation_id = hop.id WHERE hopp.history_account_id = ?", sql)
 }
+
+// TestPaymentsSuccessfulOnly tests if default query returns payments in
+// successful transactions only.
+// If it's not enclosed in brackets, it may return incorrect result when mixed
+// with `ForAccount` or `ForLedger` filters.
+func TestPaymentsSuccessfulOnly(t *testing.T) {
+	tt := test.Start(t).Scenario("failed_transactions")
+	defer tt.Finish()
+
+	var operations []Operation
+
+	q := &Q{tt.HorizonSession()}
+	query := q.Operations().
+		OnlyPayments().
+		ForAccount("GBXGQJWVLWOYHFLVTKWV5FGHA3LNYY2JQKM7OAJAUEQFU6LPCSEFVXON")
+
+	err := query.Select(&operations)
+	tt.Assert.NoError(err)
+
+	tt.Assert.Equal(2, len(operations))
+
+	for _, operation := range operations {
+		tt.Assert.True(*operation.TransactionSuccessful)
+	}
+
+	sql, _, err := query.sql.ToSql()
+	tt.Assert.NoError(err)
+	// Note: brackets around `(ht.successful = true OR ht.successful IS NULL)` are critical!
+	tt.Assert.Contains(sql, "WHERE hop.type IN (?,?,?,?) AND hopp.history_account_id = ? AND (ht.successful = true OR ht.successful IS NULL)")
+}
+
+// TestPaymentsIncludeFailed tests `IncludeFailed` method.
+func TestPaymentsIncludeFailed(t *testing.T) {
+	tt := test.Start(t).Scenario("failed_transactions")
+	defer tt.Finish()
+
+	var operations []Operation
+
+	q := &Q{tt.HorizonSession()}
+	query := q.Operations().
+		OnlyPayments().
+		ForAccount("GBXGQJWVLWOYHFLVTKWV5FGHA3LNYY2JQKM7OAJAUEQFU6LPCSEFVXON").
+		IncludeFailed()
+
+	err := query.Select(&operations)
+	tt.Assert.NoError(err)
+
+	var failed, successful int
+	for _, operation := range operations {
+		if *operation.TransactionSuccessful {
+			successful++
+		} else {
+			failed++
+		}
+	}
+
+	tt.Assert.Equal(2, successful)
+	tt.Assert.Equal(1, failed)
+
+	sql, _, err := query.sql.ToSql()
+	tt.Assert.NoError(err)
+	tt.Assert.Equal("SELECT hop.id, hop.transaction_id, hop.application_order, hop.type, hop.details, hop.source_account, ht.transaction_hash, ht.successful as transaction_successful FROM history_operations hop LEFT JOIN history_transactions ht ON ht.id = hop.transaction_id JOIN history_operation_participants hopp ON hopp.history_operation_id = hop.id WHERE hop.type IN (?,?,?,?) AND hopp.history_account_id = ?", sql)
+}
