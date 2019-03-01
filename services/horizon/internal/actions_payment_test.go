@@ -112,6 +112,7 @@ func TestPaymentActions_Show_Failed(t *testing.T) {
 		records := []operations.Base{}
 		ht.UnmarshalPage(w.Body, &records)
 
+		ht.Assert.Equal(1, len(records))
 		for _, op := range records {
 			ht.Assert.False(op.TransactionSuccessful)
 		}
@@ -123,6 +124,7 @@ func TestPaymentActions_Show_Failed(t *testing.T) {
 		records := []operations.Base{}
 		ht.UnmarshalPage(w.Body, &records)
 
+		ht.Assert.Equal(1, len(records))
 		for _, op := range records {
 			ht.Assert.True(op.TransactionSuccessful)
 		}
@@ -141,6 +143,7 @@ func TestPaymentActions_Show_Failed(t *testing.T) {
 		records := []operations.Base{}
 		ht.UnmarshalPage(w.Body, &records)
 
+		ht.Assert.Equal(1, len(records))
 		for _, op := range records {
 			ht.Assert.True(op.TransactionSuccessful)
 		}
