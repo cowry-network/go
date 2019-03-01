@@ -3,7 +3,9 @@ package core
 import (
 	"testing"
 
+	"github.com/stellar/go/services/horizon/internal/db2"
 	"github.com/stellar/go/services/horizon/internal/test"
+	"github.com/stellar/go/xdr"
 )
 
 func TestLatestLedger(t *testing.T) {
@@ -99,6 +101,44 @@ func TestSchemaVersion8(t *testing.T) {
 		tt.Assert.Equal("GAFEES4MDE5Z7Q6JBB2BYMLS7YWEHTPNR7ICANZA7TAOLMSRELE4H4S2", signers[0].Publickey)
 		tt.Assert.Equal(int32(2), signers[0].Weight)
 	}
+
+	pq, err := db2.NewPageQuery("", true, "asc", db2.DefaultPageSize)
+	if !tt.Assert.NoError(err) {
+		return
+	}
+
+	var offers []Offer
+	err = q.OffersByAddress(&offers, "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU", pq)
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(offers))
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeNative, offers[0].SellingAssetType)
+		tt.Assert.False(offers[0].SellingAssetCode.Valid)
+		tt.Assert.False(offers[0].SellingIssuer.Valid)
+
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[0].BuyingAssetType)
+		tt.Assert.True(offers[0].BuyingAssetCode.Valid)
+		tt.Assert.Equal("USD", offers[0].BuyingAssetCode.String)
+		tt.Assert.True(offers[0].BuyingIssuer.Valid)
+		tt.Assert.Equal("GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU", offers[0].BuyingIssuer.String)
+	}
+
+	offers = []Offer{}
+	err = q.OffersByAddress(&offers, "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", pq)
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(offers))
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[0].SellingAssetType)
+		tt.Assert.True(offers[0].SellingAssetCode.Valid)
+		tt.Assert.Equal("USD", offers[0].SellingAssetCode.String)
+		tt.Assert.True(offers[0].SellingIssuer.Valid)
+		tt.Assert.Equal("GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", offers[0].SellingIssuer.String)
+
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeNative, offers[0].BuyingAssetType)
+		tt.Assert.False(offers[0].BuyingAssetCode.Valid)
+		tt.Assert.False(offers[0].BuyingIssuer.Valid)
+	}
+
+	// var assets []xdr.Asset
+	// err = q.ConnectedAssets(&assets, )
 }
 
 func TestSchemaVersion9(t *testing.T) {
@@ -137,5 +177,11 @@ func TestSchemaVersion9(t *testing.T) {
 		tt.Assert.Equal("GDZOBPTVEECUYFCHSQ5NCEUVAV4JKRZI6KO5HFOM7HGQT22E3XIGRHNU", signers[0].Accountid)
 		tt.Assert.Equal("GC7BWB2ME4LII3TVWTHUIT7KGJXU4D5M6JUNLQ57WA7JERDNSAEXLOAN", signers[0].Publickey)
 		tt.Assert.Equal(int32(10), signers[0].Weight)
+	}
+
+	var signers2 []Signer
+	err = q.SignersByAddress(&signers2, "GD7HOGYRECGFKFR2GGOWEF2FT3DVR3GU4K7BVRGGPWVSXAVKGSYKTXOH")
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(0, len(signers2))
 	}
 }

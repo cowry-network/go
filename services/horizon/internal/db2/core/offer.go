@@ -5,8 +5,8 @@ import (
 	"math/big"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/go-errors/errors"
 	"github.com/stellar/go/services/horizon/internal/db2"
+	"github.com/stellar/go/support/errors"
 	"github.com/stellar/go/xdr"
 )
 
@@ -24,7 +24,64 @@ func (r Offer) PriceAsString() string {
 // finding.  Given the input asset type, a list of xdr.Assets is returned that
 // each have some available trades for the input asset.
 func (q *Q) ConnectedAssets(dest interface{}, selling xdr.Asset) error {
+	schemaVersion, err := q.SchemaVersion()
+	if err != nil {
+		return err
+	}
 
+	if schemaVersion < 9 {
+		return q.connectedAssetsPreSchema8(dest, selling)
+	} else {
+		return q.connectedAssetsSchema9(dest, selling)
+	}
+}
+
+func (q *Q) connectedAssetsSchema9(dest interface{}, selling xdr.Asset) error {
+	assets, ok := dest.(*[]xdr.Asset)
+	if !ok {
+		return errors.New("dest is not *[]xdr.Asset")
+	}
+
+	sellingAssetXDRString, err := xdr.MarshalBase64(selling)
+	if err != nil {
+		return errors.Wrap(err, "Error marshaling selling")
+	}
+
+	sql := sq.Select("buyingasset").
+		From("offers").
+		Where(sq.Eq{"sellingasset": sellingAssetXDRString}).
+		GroupBy("buyingasset")
+
+	var rows []struct {
+		Asset string
+	}
+
+	err = q.Select(&rows, sql)
+
+	if err != nil {
+		return err
+	}
+
+	results := make([]xdr.Asset, len(rows))
+	*assets = results
+
+	for i, r := range rows {
+		var asset xdr.Asset
+		err = xdr.SafeUnmarshalBase64(r.Asset, &asset)
+		if err != nil {
+			return errors.Wrap(err, "Error decoding asset")
+		}
+
+		results[i] = asset
+	}
+
+	return nil
+}
+
+// ConnectedAssets loads xdr.Asset records for the purposes of path
+// finding.  Given the input asset type, a list of xdr.Assets is returned that
+// each have some available trades for the input asset.
+func (q *Q) connectedAssetsPreSchema8(dest interface{}, selling xdr.Asset) error {
 	assets, ok := dest.(*[]xdr.Asset)
 	if !ok {
 		return errors.New("dest is not *[]xdr.Asset")
@@ -81,6 +138,11 @@ func (q *Q) ConnectedAssets(dest interface{}, selling xdr.Asset) error {
 // OffersByAddress loads a page of active offers for the given
 // address.
 func (q *Q) OffersByAddress(dest interface{}, addy string, pq db2.PageQuery) error {
+	schemaVersion, err := q.SchemaVersion()
+	if err != nil {
+		return err
+	}
+
 	sql := sq.Select("co.*").
 		From("offers co").
 		Where("co.sellerid = ?", addy).
@@ -98,5 +160,56 @@ func (q *Q) OffersByAddress(dest interface{}, addy string, pq db2.PageQuery) err
 		sql = sql.Where("co.offerid < ?", cursor).OrderBy("co.offerid desc")
 	}
 
-	return q.Select(dest, sql)
+	err = q.Select(dest, sql)
+	if err != nil {
+		return err
+	}
+
+	if schemaVersion < 9 {
+		return nil
+	}
+
+	// In schema 9 we need to decode XDR-encoded assets
+	offers, ok := dest.([]Offer)
+	if !ok {
+		return errors.New("dest is not []Offer")
+	}
+
+	newOffers := make([]Offer, 0, len(offers))
+	for i, offer := range offers {
+		var sellingAsset, buyingAsset xdr.Asset
+
+		err = xdr.SafeUnmarshalBase64(offer.sellingAsset, &sellingAsset)
+		if err != nil {
+			return errors.Wrap(err, "Error decoding sellingasset")
+		}
+
+		err = xdr.SafeUnmarshalBase64(offer.buyingAsset, &buyingAsset)
+		if err != nil {
+			return errors.Wrap(err, "Error decoding buyingasset")
+		}
+
+		newOffers[i] = offer
+
+		err = sellingAsset.Extract(
+			&newOffers[i].SellingAssetType,
+			&newOffers[i].SellingAssetCode,
+			&newOffers[i].SellingIssuer,
+		)
+		if err != nil {
+			return errors.Wrap(err, "Error extracting sellingasset")
+		}
+
+		err = buyingAsset.Extract(
+			&newOffers[i].BuyingAssetType,
+			&newOffers[i].BuyingAssetCode,
+			&newOffers[i].BuyingIssuer,
+		)
+		if err != nil {
+			return errors.Wrap(err, "Error extracting buyingasset")
+		}
+	}
+
+	*dest.(*[]Offer) = newOffers
+	return nil
 }

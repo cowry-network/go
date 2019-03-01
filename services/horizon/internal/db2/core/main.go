@@ -63,6 +63,10 @@ type Offer struct {
 	Price        float64   `db:"price"`
 	Flags        int32     `db:"flags"`
 	Lastmodified int32     `db:"lastmodified"`
+
+	// Schema v9 fields
+	sellingAsset string `db:"sellingasset"`
+	buyingAsset  string `db:"buyingasset"`
 }
 
 // OrderBookSummaryPriceLevel is a collapsed view of multiple offers at the same price that
