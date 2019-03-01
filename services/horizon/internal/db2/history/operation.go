@@ -58,9 +58,10 @@ func (q *Q) OperationFeeStats(currentSeq int32, dest *FeeStats) error {
 // filters.  See `OperationsQ` for the available filters.
 func (q *Q) Operations() *OperationsQ {
 	return &OperationsQ{
-		parent:  q,
-		sql:     selectOperation,
-		opIdCol: "hop.id",
+		parent:        q,
+		sql:           selectOperation,
+		opIdCol:       "hop.id",
+		includeFailed: false,
 	}
 }
 
@@ -146,10 +147,9 @@ func (q *OperationsQ) OnlyPayments() *OperationsQ {
 	return q
 }
 
-// SuccessfulOnly changes the query to include successful operations only.
-func (q *OperationsQ) SuccessfulOnly() *OperationsQ {
-	q.sql = q.sql.
-		Where("(ht.successful = true OR ht.successful IS NULL)")
+// IncludeFailed changes the query to include failed transactions.
+func (q *OperationsQ) IncludeFailed() *OperationsQ {
+	q.includeFailed = true
 	return q
 }
 
@@ -167,6 +167,11 @@ func (q *OperationsQ) Page(page db2.PageQuery) *OperationsQ {
 func (q *OperationsQ) Select(dest interface{}) error {
 	if q.Err != nil {
 		return q.Err
+	}
+
+	if q.includeFailed == false {
+		q.sql = q.sql.
+			Where("(ht.successful = true OR ht.successful IS NULL)")
 	}
 
 	q.Err = q.parent.Select(dest, q.sql)

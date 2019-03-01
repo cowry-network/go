@@ -21,8 +21,9 @@ func (q *Q) TransactionByHash(dest interface{}, hash string) error {
 // available filters.
 func (q *Q) Transactions() *TransactionsQ {
 	return &TransactionsQ{
-		parent: q,
-		sql:    selectTransaction,
+		parent:        q,
+		sql:           selectTransaction,
+		includeFailed: false,
 	}
 }
 
@@ -61,10 +62,9 @@ func (q *TransactionsQ) ForLedger(seq int32) *TransactionsQ {
 	return q
 }
 
-// SuccessfulOnly changes the query to include successful transactions only.
-func (q *TransactionsQ) SuccessfulOnly() *TransactionsQ {
-	q.sql = q.sql.
-		Where("(ht.successful = true OR ht.successful IS NULL)")
+// IncludeFailed changes the query to include failed transactions.
+func (q *TransactionsQ) IncludeFailed() *TransactionsQ {
+	q.includeFailed = true
 	return q
 }
 
@@ -82,6 +82,11 @@ func (q *TransactionsQ) Page(page db2.PageQuery) *TransactionsQ {
 func (q *TransactionsQ) Select(dest interface{}) error {
 	if q.Err != nil {
 		return q.Err
+	}
+
+	if q.includeFailed == false {
+		q.sql = q.sql.
+			Where("(ht.successful = true OR ht.successful IS NULL)")
 	}
 
 	q.Err = q.parent.Select(dest, q.sql)

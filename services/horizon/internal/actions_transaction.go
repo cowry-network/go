@@ -100,8 +100,8 @@ func (action *TransactionIndexAction) loadRecords() {
 		txs.ForLedger(action.LedgerFilter)
 	}
 
-	if !action.IncludeFailed {
-		txs.SuccessfulOnly()
+	if action.IncludeFailed {
+		txs.IncludeFailed()
 	}
 
 	action.Err = txs.Page(action.PagingParams).Select(&action.Records)

@@ -84,21 +84,63 @@ func TestOperationQueryBuilder(t *testing.T) {
 	tt.Assert.EqualValues(want, got)
 }
 
-// TestOperationSuccessfulOnly tests SuccessfulOnly() method. It specifically
-// tests the `successful = true OR successful IS NULL` condition in a query.
+// TestOperationSuccessfulOnly tests if default query returns operations in
+// successful transactions only.
 // If it's not enclosed in brackets, it may return incorrect result when mixed
 // with `ForAccount` or `ForLedger` filters.
 func TestOperationSuccessfulOnly(t *testing.T) {
 	tt := test.Start(t).Scenario("failed_transactions")
 	defer tt.Finish()
 
+	var operations []Operation
+
 	q := &Q{tt.HorizonSession()}
 	query := q.Operations().
-		ForAccount("GCXKG6RN4ONIEPCMNFB732A436Z5PNDSRLGWK7GBLCMQLIFO4S7EYWVU").
-		SuccessfulOnly()
+		ForAccount("GA5WBPYA5Y4WAEHXWR2UKO2UO4BUGHUQ74EUPKON2QHV4WRHOIRNKKH2")
+
+	err := query.Select(&operations)
+	tt.Assert.NoError(err)
+
+	tt.Assert.Equal(3, len(operations))
+
+	for _, operation := range operations {
+		tt.Assert.True(*operation.TransactionSuccessful)
+	}
 
 	sql, _, err := query.sql.ToSql()
 	tt.Assert.NoError(err)
 	// Note: brackets around `(ht.successful = true OR ht.successful IS NULL)` are critical!
 	tt.Assert.Contains(sql, "WHERE hopp.history_account_id = ? AND (ht.successful = true OR ht.successful IS NULL)")
+}
+
+// TestOperationIncludeFailed tests `IncludeFailed` method.
+func TestOperationIncludeFailed(t *testing.T) {
+	tt := test.Start(t).Scenario("failed_transactions")
+	defer tt.Finish()
+
+	var operations []Operation
+
+	q := &Q{tt.HorizonSession()}
+	query := q.Operations().
+		ForAccount("GA5WBPYA5Y4WAEHXWR2UKO2UO4BUGHUQ74EUPKON2QHV4WRHOIRNKKH2").
+		IncludeFailed()
+
+	err := query.Select(&operations)
+	tt.Assert.NoError(err)
+
+	var failed, successful int
+	for _, operation := range operations {
+		if *operation.TransactionSuccessful {
+			successful++
+		} else {
+			failed++
+		}
+	}
+
+	tt.Assert.Equal(3, successful)
+	tt.Assert.Equal(1, failed)
+
+	sql, _, err := query.sql.ToSql()
+	tt.Assert.NoError(err)
+	tt.Assert.Equal("SELECT hop.id, hop.transaction_id, hop.application_order, hop.type, hop.details, hop.source_account, ht.transaction_hash, ht.successful as transaction_successful FROM history_operations hop LEFT JOIN history_transactions ht ON ht.id = hop.transaction_id JOIN history_operation_participants hopp ON hopp.history_operation_id = hop.id WHERE hopp.history_account_id = ?", sql)
 }
