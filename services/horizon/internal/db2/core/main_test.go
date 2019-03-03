@@ -125,7 +125,7 @@ func TestSchemaVersion8(t *testing.T) {
 	offers = []Offer{}
 	err = q.OffersByAddress(&offers, "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", pq)
 	if tt.Assert.NoError(err) {
-		tt.Assert.Equal(1, len(offers))
+		tt.Assert.Equal(4, len(offers))
 		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[0].SellingAssetType)
 		tt.Assert.True(offers[0].SellingAssetCode.Valid)
 		tt.Assert.Equal("USD", offers[0].SellingAssetCode.String)
@@ -140,7 +140,7 @@ func TestSchemaVersion8(t *testing.T) {
 	var assets []xdr.Asset
 	err = q.ConnectedAssets(&assets, xdr.MustNewNativeAsset())
 	if tt.Assert.NoError(err) {
-		tt.Assert.Equal(1, len(assets))
+		tt.Assert.Equal(2, len(assets))
 		connectedAsset := xdr.MustNewCreditAsset("USD", "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU")
 		tt.Assert.True(assets[0].Equals(connectedAsset))
 	}
@@ -152,6 +152,24 @@ func TestSchemaVersion8(t *testing.T) {
 		connectedAsset := xdr.MustNewNativeAsset()
 		tt.Assert.True(assets[0].Equals(connectedAsset))
 	}
+
+	var orderbookSummary OrderBookSummary
+	err = q.GetOrderBookSummary(&orderbookSummary, xdr.MustNewNativeAsset(), xdr.MustNewCreditAsset("USD", "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD"), 10)
+	if tt.Assert.NoError(err) {
+		checkOrderBookRow(tt, orderbookSummary[0], "ask", int32(1), int32(1), float64(1), 300000000)
+		checkOrderBookRow(tt, orderbookSummary[1], "ask", int32(3), int32(1), float64(3), 400000000)
+
+		checkOrderBookRow(tt, orderbookSummary[2], "bid", int32(1), int32(2), float64(0.5), 200000000)
+		checkOrderBookRow(tt, orderbookSummary[3], "bid", int32(1), int32(1), float64(1), 100000000)
+	}
+}
+
+func checkOrderBookRow(tt *test.T, row OrderBookSummaryPriceLevel, typ string, pricen, priced int32, pricef float64, amount int64) {
+	tt.Assert.Equal(typ, row.Type)
+	tt.Assert.Equal(pricen, row.Pricen)
+	tt.Assert.Equal(priced, row.Priced)
+	tt.Assert.Equal(pricef, row.Pricef)
+	tt.Assert.Equal(amount, row.Amount)
 }
 
 func TestSchemaVersion9(t *testing.T) {
@@ -221,7 +239,8 @@ func TestSchemaVersion9(t *testing.T) {
 	offers = []Offer{}
 	err = q.OffersByAddress(&offers, "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", pq)
 	if tt.Assert.NoError(err) {
-		tt.Assert.Equal(1, len(offers))
+		tt.Assert.Equal(4, len(offers))
+
 		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[0].SellingAssetType)
 		tt.Assert.True(offers[0].SellingAssetCode.Valid)
 		tt.Assert.Equal("USD", offers[0].SellingAssetCode.String)
@@ -231,12 +250,18 @@ func TestSchemaVersion9(t *testing.T) {
 		tt.Assert.Equal(xdr.AssetTypeAssetTypeNative, offers[0].BuyingAssetType)
 		tt.Assert.False(offers[0].BuyingAssetCode.Valid)
 		tt.Assert.False(offers[0].BuyingIssuer.Valid)
+
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[1].SellingAssetType)
+		tt.Assert.True(offers[1].SellingAssetCode.Valid)
+		tt.Assert.Equal("USD", offers[1].SellingAssetCode.String)
+		tt.Assert.True(offers[1].SellingIssuer.Valid)
+		tt.Assert.Equal("GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", offers[1].SellingIssuer.String)
 	}
 
 	var assets []xdr.Asset
 	err = q.ConnectedAssets(&assets, xdr.MustNewNativeAsset())
 	if tt.Assert.NoError(err) {
-		tt.Assert.Equal(1, len(assets))
+		tt.Assert.Equal(2, len(assets))
 		connectedAsset := xdr.MustNewCreditAsset("USD", "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU")
 		tt.Assert.True(assets[0].Equals(connectedAsset))
 	}
@@ -247,5 +272,15 @@ func TestSchemaVersion9(t *testing.T) {
 		tt.Assert.Equal(1, len(assets))
 		connectedAsset := xdr.MustNewNativeAsset()
 		tt.Assert.True(assets[0].Equals(connectedAsset))
+	}
+
+	var orderbookSummary OrderBookSummary
+	err = q.GetOrderBookSummary(&orderbookSummary, xdr.MustNewNativeAsset(), xdr.MustNewCreditAsset("USD", "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD"), 10)
+	if tt.Assert.NoError(err) {
+		checkOrderBookRow(tt, orderbookSummary[0], "ask", int32(1), int32(1), float64(1), 300000000)
+		checkOrderBookRow(tt, orderbookSummary[1], "ask", int32(3), int32(1), float64(3), 400000000)
+
+		checkOrderBookRow(tt, orderbookSummary[2], "bid", int32(1), int32(2), float64(0.5), 200000000)
+		checkOrderBookRow(tt, orderbookSummary[3], "bid", int32(1), int32(1), float64(1), 100000000)
 	}
 }
