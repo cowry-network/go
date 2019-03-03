@@ -149,6 +149,30 @@ CREATE TABLE ledgerheaders (
     CONSTRAINT ledgerheaders_ledgerseq_check CHECK ((ledgerseq >= 0))
 );
 
+--
+-- Name: offers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE offers (
+    sellerid character varying(56) NOT NULL,
+    offerid bigint NOT NULL,
+    sellingasset text NOT NULL,
+    buyingasset text NOT NULL,
+    amount bigint NOT NULL,
+    pricen integer NOT NULL,
+    priced integer NOT NULL,
+    price double precision NOT NULL,
+    flags integer NOT NULL,
+    lastmodified integer NOT NULL,
+    CONSTRAINT offers_amount_check CHECK ((amount >= 0)),
+    CONSTRAINT offers_offerid_check CHECK ((offerid >= 0))
+);
+
+ALTER TABLE ONLY offers
+    ADD CONSTRAINT offers_pkey PRIMARY KEY (offerid);
+
+INSERT INTO offers VALUES ('GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU', 1, 'AAAAAA==', 'AAAAAVVTRAAAAAAALsLzczZPbcG7iR1Aap19uhmCNzGwnaUFPbeJ+hFUV7E=', 2000000000, 1, 2, 0.5, 0, 19);
+INSERT INTO offers VALUES ('GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD', 4, 'AAAAAVVTRAAAAAAAdQRiekAoVkbqXJa3xIIXnCcZLADk+cVfmZs9SLHWDWE=', 'AAAAAA==', 100000000, 1, 1, 1, 0, 24);
 
 
 --

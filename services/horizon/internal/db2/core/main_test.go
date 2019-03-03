@@ -137,8 +137,21 @@ func TestSchemaVersion8(t *testing.T) {
 		tt.Assert.False(offers[0].BuyingIssuer.Valid)
 	}
 
-	// var assets []xdr.Asset
-	// err = q.ConnectedAssets(&assets, )
+	var assets []xdr.Asset
+	err = q.ConnectedAssets(&assets, xdr.MustNewNativeAsset())
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(assets))
+		connectedAsset := xdr.MustNewCreditAsset("USD", "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU")
+		tt.Assert.True(assets[0].Equals(connectedAsset))
+	}
+
+	assets = []xdr.Asset{}
+	err = q.ConnectedAssets(&assets, xdr.MustNewCreditAsset("USD", "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD"))
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(assets))
+		connectedAsset := xdr.MustNewNativeAsset()
+		tt.Assert.True(assets[0].Equals(connectedAsset))
+	}
 }
 
 func TestSchemaVersion9(t *testing.T) {
@@ -183,5 +196,56 @@ func TestSchemaVersion9(t *testing.T) {
 	err = q.SignersByAddress(&signers2, "GD7HOGYRECGFKFR2GGOWEF2FT3DVR3GU4K7BVRGGPWVSXAVKGSYKTXOH")
 	if tt.Assert.NoError(err) {
 		tt.Assert.Equal(0, len(signers2))
+	}
+
+	pq, err := db2.NewPageQuery("", true, "asc", db2.DefaultPageSize)
+	if !tt.Assert.NoError(err) {
+		return
+	}
+
+	var offers []Offer
+	err = q.OffersByAddress(&offers, "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU", pq)
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(offers))
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeNative, offers[0].SellingAssetType)
+		tt.Assert.False(offers[0].SellingAssetCode.Valid)
+		tt.Assert.False(offers[0].SellingIssuer.Valid)
+
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[0].BuyingAssetType)
+		tt.Assert.True(offers[0].BuyingAssetCode.Valid)
+		tt.Assert.Equal("USD", offers[0].BuyingAssetCode.String)
+		tt.Assert.True(offers[0].BuyingIssuer.Valid)
+		tt.Assert.Equal("GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU", offers[0].BuyingIssuer.String)
+	}
+
+	offers = []Offer{}
+	err = q.OffersByAddress(&offers, "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", pq)
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(offers))
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeCreditAlphanum4, offers[0].SellingAssetType)
+		tt.Assert.True(offers[0].SellingAssetCode.Valid)
+		tt.Assert.Equal("USD", offers[0].SellingAssetCode.String)
+		tt.Assert.True(offers[0].SellingIssuer.Valid)
+		tt.Assert.Equal("GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD", offers[0].SellingIssuer.String)
+
+		tt.Assert.Equal(xdr.AssetTypeAssetTypeNative, offers[0].BuyingAssetType)
+		tt.Assert.False(offers[0].BuyingAssetCode.Valid)
+		tt.Assert.False(offers[0].BuyingIssuer.Valid)
+	}
+
+	var assets []xdr.Asset
+	err = q.ConnectedAssets(&assets, xdr.MustNewNativeAsset())
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(assets))
+		connectedAsset := xdr.MustNewCreditAsset("USD", "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU")
+		tt.Assert.True(assets[0].Equals(connectedAsset))
+	}
+
+	assets = []xdr.Asset{}
+	err = q.ConnectedAssets(&assets, xdr.MustNewCreditAsset("USD", "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD"))
+	if tt.Assert.NoError(err) {
+		tt.Assert.Equal(1, len(assets))
+		connectedAsset := xdr.MustNewNativeAsset()
+		tt.Assert.True(assets[0].Equals(connectedAsset))
 	}
 }
