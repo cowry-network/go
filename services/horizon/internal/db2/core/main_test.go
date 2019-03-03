@@ -262,8 +262,16 @@ func TestSchemaVersion9(t *testing.T) {
 	err = q.ConnectedAssets(&assets, xdr.MustNewNativeAsset())
 	if tt.Assert.NoError(err) {
 		tt.Assert.Equal(2, len(assets))
-		connectedAsset := xdr.MustNewCreditAsset("USD", "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU")
-		tt.Assert.True(assets[0].Equals(connectedAsset))
+		connectedAssetA := xdr.MustNewCreditAsset("USD", "GAXMF43TGZHW3QN3REOUA2U5PW5BTARXGGYJ3JIFHW3YT6QRKRL3CPPU")
+		connectedAssetB := xdr.MustNewCreditAsset("USD", "GB2QIYT2IAUFMRXKLSLLPRECC6OCOGJMADSPTRK7TGNT2SFR2YGWDARD")
+		// It looks like there are some ordering changes between Postgres versions.
+		// We should really stick to a single version.
+		if assets[0].Equals(connectedAssetA) {
+			tt.Assert.True(assets[1].Equals(connectedAssetB), "%s %s", assets[0], assets[1])
+		}
+		if assets[0].Equals(connectedAssetB) {
+			tt.Assert.True(assets[1].Equals(connectedAssetA), "%s %s", assets[0], assets[1])
+		}
 	}
 
 	assets = []xdr.Asset{}

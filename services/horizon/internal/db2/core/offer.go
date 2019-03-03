@@ -51,8 +51,7 @@ func (q *Q) connectedAssetsSchema9(dest interface{}, selling xdr.Asset) error {
 	sql := sq.Select("buyingasset").
 		From("offers").
 		Where(sq.Eq{"sellingasset": sellingAssetXDRString}).
-		GroupBy("buyingasset").
-		OrderBy("buyingasset")
+		GroupBy("buyingasset")
 
 	var rows []struct {
 		Asset string `db:"buyingasset"`
