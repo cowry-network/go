@@ -8,6 +8,14 @@ import (
 	"github.com/stellar/go/xdr"
 )
 
+func (t *Transaction) IsSuccessful() bool {
+	if t.Successful == nil {
+		return true
+	}
+
+	return *t.Successful
+}
+
 // TransactionByHash is a query that loads a single row from the
 // `history_transactions` table based upon the provided hash.
 func (q *Q) TransactionByHash(dest interface{}, hash string) error {
@@ -102,20 +110,29 @@ func (q *TransactionsQ) Select(dest interface{}) error {
 	}
 
 	for _, t := range *transactions {
-		if !q.includeFailed {
-			if t.Successful != nil && *t.Successful == false {
-				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s", t.TransactionHash)
-			}
+		var resultXDR xdr.TransactionResult
+		err := xdr.SafeUnmarshalBase64(t.TxResult, &resultXDR)
+		if err != nil {
+			return err
+		}
 
-			var resultXDR xdr.TransactionResult
-			err := xdr.SafeUnmarshalBase64(t.TxResult, &resultXDR)
-			if err != nil {
-				return err
+		if !q.includeFailed {
+			if !t.IsSuccessful() {
+				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s", t.TransactionHash)
 			}
 
 			if resultXDR.Result.Code != xdr.TransactionResultCodeTxSuccess {
 				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s %s", t.TransactionHash, t.TxResult)
 			}
+		}
+
+		// Check if `successful` equals resultXDR
+		if t.IsSuccessful() && resultXDR.Result.Code != xdr.TransactionResultCodeTxSuccess {
+			return errors.Errorf("Corrupted data! `successful=true` but returned transaction is not success: %s %s", t.TransactionHash, t.TxResult)
+		}
+
+		if !t.IsSuccessful() && resultXDR.Result.Code == xdr.TransactionResultCodeTxSuccess {
+			return errors.Errorf("Corrupted data! `successful=false` but returned transaction is success: %s %s", t.TransactionHash, t.TxResult)
 		}
 	}
 
