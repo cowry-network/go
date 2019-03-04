@@ -14,6 +14,7 @@ import (
 	"github.com/stellar/go/support/errors"
 	"github.com/stellar/go/support/render/hal"
 	"github.com/stellar/go/support/render/problem"
+	"github.com/stellar/go/xdr"
 )
 
 // This file contains the actions:
@@ -105,6 +106,27 @@ func (action *TransactionIndexAction) loadRecords() {
 	}
 
 	action.Err = txs.Page(action.PagingParams).Select(&action.Records)
+	if action.Err == nil {
+		for _, t := range action.Records {
+			if !action.IncludeFailed {
+				if t.Successful != nil && *t.Successful == false {
+					action.Err = errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s", t.TransactionHash)
+					return
+				}
+
+				var resultXDR xdr.TransactionResult
+				action.Err = xdr.SafeUnmarshalBase64(t.TxResult, &resultXDR)
+				if action.Err != nil {
+					return
+				}
+
+				if resultXDR.Result.Code != xdr.TransactionResultCodeTxSuccess {
+					action.Err = errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s %s", t.TransactionHash, t.TxResult)
+					return
+				}
+			}
+		}
+	}
 }
 
 func (action *TransactionIndexAction) loadPage() {

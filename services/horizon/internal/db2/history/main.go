@@ -234,6 +234,7 @@ type Operation struct {
 	TotalOrderID
 	TransactionID    int64             `db:"transaction_id"`
 	TransactionHash  string            `db:"transaction_hash"`
+	TxResult         string            `db:"tx_result"`
 	ApplicationOrder int32             `db:"application_order"`
 	Type             xdr.OperationType `db:"type"`
 	DetailsString    null.String       `db:"details"`

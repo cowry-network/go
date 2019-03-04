@@ -175,7 +175,34 @@ func (q *OperationsQ) Select(dest interface{}) error {
 	}
 
 	q.Err = q.parent.Select(dest, q.sql)
-	return q.Err
+	if q.Err != nil {
+		return q.Err
+	}
+
+	operations, ok := dest.(*[]Operation)
+	if !ok {
+		return errors.New("dest is not *[]Operation")
+	}
+
+	for _, o := range *operations {
+		if !q.includeFailed {
+			if o.TransactionSuccessful != nil && *o.TransactionSuccessful == false {
+				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s", o.TransactionHash)
+			}
+
+			var resultXDR xdr.TransactionResult
+			err := xdr.SafeUnmarshalBase64(o.TxResult, &resultXDR)
+			if err != nil {
+				return err
+			}
+
+			if resultXDR.Result.Code != xdr.TransactionResultCodeTxSuccess {
+				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s %s", o.TransactionHash, o.TxResult)
+			}
+		}
+	}
+
+	return nil
 }
 
 var selectOperation = sq.Select(
@@ -186,6 +213,7 @@ var selectOperation = sq.Select(
 		"hop.details, " +
 		"hop.source_account, " +
 		"ht.transaction_hash, " +
+		"ht.tx_result, " +
 		"ht.successful as transaction_successful").
 	From("history_operations hop").
 	LeftJoin("history_transactions ht ON ht.id = hop.transaction_id")

@@ -4,6 +4,8 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/stellar/go/services/horizon/internal/db2"
 	"github.com/stellar/go/services/horizon/internal/toid"
+	"github.com/stellar/go/support/errors"
+	"github.com/stellar/go/xdr"
 )
 
 // TransactionByHash is a query that loads a single row from the
@@ -90,7 +92,34 @@ func (q *TransactionsQ) Select(dest interface{}) error {
 	}
 
 	q.Err = q.parent.Select(dest, q.sql)
-	return q.Err
+	if q.Err != nil {
+		return q.Err
+	}
+
+	transactions, ok := dest.(*[]Transaction)
+	if !ok {
+		return errors.New("dest is not *[]Transaction")
+	}
+
+	for _, t := range *transactions {
+		if !q.includeFailed {
+			if t.Successful != nil && *t.Successful == false {
+				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s", t.TransactionHash)
+			}
+
+			var resultXDR xdr.TransactionResult
+			err := xdr.SafeUnmarshalBase64(t.TxResult, &resultXDR)
+			if err != nil {
+				return err
+			}
+
+			if resultXDR.Result.Code != xdr.TransactionResultCodeTxSuccess {
+				return errors.Errorf("Corrupted data! `include_failed=false` but returned transaction is failed: %s %s", t.TransactionHash, t.TxResult)
+			}
+		}
+	}
+
+	return nil
 }
 
 var selectTransaction = sq.Select(
