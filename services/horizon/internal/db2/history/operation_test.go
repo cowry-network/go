@@ -207,3 +207,47 @@ func TestPaymentsIncludeFailed(t *testing.T) {
 	tt.Assert.NoError(err)
 	tt.Assert.Equal("SELECT hop.id, hop.transaction_id, hop.application_order, hop.type, hop.details, hop.source_account, ht.transaction_hash, ht.tx_result, ht.successful as transaction_successful FROM history_operations hop LEFT JOIN history_transactions ht ON ht.id = hop.transaction_id JOIN history_operation_participants hopp ON hopp.history_operation_id = hop.id WHERE hop.type IN (?,?,?,?) AND hopp.history_account_id = ?", sql)
 }
+
+func TestExtraChecksOperationsTransactionSuccessfulTrueResultFalse(t *testing.T) {
+	tt := test.Start(t).Scenario("failed_transactions")
+	defer tt.Finish()
+
+	// successful `true` but tx result `false`
+	_, err := tt.HorizonDB.Exec(
+		`UPDATE history_transactions SET successful = true WHERE transaction_hash = 'aa168f12124b7c196c0adaee7c73a64d37f99428cacb59a91ff389626845e7cf'`,
+	)
+	tt.Require.NoError(err)
+
+	var operations []Operation
+
+	q := &Q{tt.HorizonSession()}
+	query := q.Operations().
+		ForAccount("GA5WBPYA5Y4WAEHXWR2UKO2UO4BUGHUQ74EUPKON2QHV4WRHOIRNKKH2").
+		IncludeFailed()
+
+	err = query.Select(&operations)
+	tt.Assert.Error(err)
+	tt.Assert.Contains(err.Error(), "Corrupted data! `successful=true` but returned transaction is not success")
+}
+
+func TestExtraChecksOperationsTransactionSuccessfulFalseResultTrue(t *testing.T) {
+	tt := test.Start(t).Scenario("failed_transactions")
+	defer tt.Finish()
+
+	// successful `false` but tx result `true`
+	_, err := tt.HorizonDB.Exec(
+		`UPDATE history_transactions SET successful = false WHERE transaction_hash = 'a2dabf4e9d1642722602272e178a37c973c9177b957da86192a99b3e9f3a9aa4'`,
+	)
+	tt.Require.NoError(err)
+
+	var operations []Operation
+
+	q := &Q{tt.HorizonSession()}
+	query := q.Operations().
+		ForAccount("GBXGQJWVLWOYHFLVTKWV5FGHA3LNYY2JQKM7OAJAUEQFU6LPCSEFVXON").
+		IncludeFailed()
+
+	err = query.Select(&operations)
+	tt.Assert.Error(err)
+	tt.Assert.Contains(err.Error(), "Corrupted data! `successful=false` but returned transaction is success")
+}
