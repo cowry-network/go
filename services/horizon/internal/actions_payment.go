@@ -114,7 +114,7 @@ func (action *PaymentsIndexAction) loadRecords() {
 	}
 
 	// When querying operations for transaction return both successful
-	// and failed operations. We asume that because user is querying
+	// and failed operations. We assume that because user is querying
 	// this specific transactions, she knows it's status.
 	if action.TransactionFilter != "" || action.IncludeFailed {
 		ops.IncludeFailed()
