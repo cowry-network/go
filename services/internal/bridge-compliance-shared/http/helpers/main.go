@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/support/errors"
 )
 
 var (

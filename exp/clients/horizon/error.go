@@ -3,9 +3,9 @@ package horizonclient
 import (
 	"encoding/json"
 
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/render/problem"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/render/problem"
+	"github.com/cowry-network/go/xdr"
 )
 
 func (herr Error) Error() string {

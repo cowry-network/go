@@ -6,8 +6,8 @@ import (
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/chaincfg/chainhash"
 	"github.com/btcsuite/btcd/wire"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/log"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/log"
 	"github.com/tyler-smith/go-bip32"
 )
 

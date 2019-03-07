@@ -4,16 +4,16 @@ import (
 	"strconv"
 	gTime "time"
 
-	"github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/horizon/internal/actions"
-	"github.com/stellar/go/services/horizon/internal/db2"
-	"github.com/stellar/go/services/horizon/internal/db2/history"
-	"github.com/stellar/go/services/horizon/internal/render/sse"
-	"github.com/stellar/go/services/horizon/internal/resourceadapter"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/render/hal"
-	"github.com/stellar/go/support/time"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/protocols/horizon"
+	"github.com/cowry-network/go/services/horizon/internal/actions"
+	"github.com/cowry-network/go/services/horizon/internal/db2"
+	"github.com/cowry-network/go/services/horizon/internal/db2/history"
+	"github.com/cowry-network/go/services/horizon/internal/render/sse"
+	"github.com/cowry-network/go/services/horizon/internal/resourceadapter"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/render/hal"
+	"github.com/cowry-network/go/support/time"
+	"github.com/cowry-network/go/xdr"
 )
 
 // Interface verifications

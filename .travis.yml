@@ -13,7 +13,7 @@ go:
 - '1.10'
 - '1.11'
 - tip
-go_import_path: github.com/stellar/go
+go_import_path: github.com/cowry-network/go
 before_install:
 - |
   if [ "$TRAVIS_TAG" != "" ]; then

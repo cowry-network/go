@@ -17,9 +17,9 @@ Building Horizon requires the following developer tools:
 - [mercurial](https://www.mercurial-scm.org/) (needed for `go-dep`)
 
 1. Set your [GOPATH](https://github.com/golang/go/wiki/GOPATH) environment variable, if you haven't already. The default `GOPATH` is `$HOME/go`.
-2. Clone the [Stellar Go](https://github.com/stellar/go) monorepo:  `go get github.com/stellar/go`. You should see the repository present at `$GOPATH/src/github.com/stellar/go`.
-3. Enter the source dir: `cd $GOPATH/src/github.com/stellar/go`, and download external dependencies: `dep ensure -v`. You should see the downloaded third party dependencies in `$GOPATH/pkg`.
-4. Compile the Horizon binary: `cd $GOPATH; go install github.com/stellar/go/services/horizon`. You should see the resulting `horizon` executable in `$GOPATH/bin`.
+2. Clone the [Stellar Go](https://github.com/cowry-network/go) monorepo:  `go get github.com/cowry-network/go`. You should see the repository present at `$GOPATH/src/github.com/cowry-network/go`.
+3. Enter the source dir: `cd $GOPATH/src/github.com/cowry-network/go`, and download external dependencies: `dep ensure -v`. You should see the downloaded third party dependencies in `$GOPATH/pkg`.
+4. Compile the Horizon binary: `cd $GOPATH; go install github.com/cowry-network/go/services/horizon`. You should see the resulting `horizon` executable in `$GOPATH/bin`.
 5. Add Go binaries to your PATH in your `bashrc` or equivalent, for easy access: `export PATH=${GOPATH//://bin:}/bin:$PATH`
 
 Open a new terminal. Confirm everything worked by running `horizon --help` successfully. You should see an informative message listing the command line options supported by Horizon.
@@ -39,7 +39,7 @@ Horizon uses a Postgres database backend to store test fixtures and record infor
 ## Run tests
 At this point you should be able to run Horizon's unit tests:
 ```bash
-cd $GOPATH/src/github.com/stellar/go/services/horizon
+cd $GOPATH/src/github.com/cowry-network/go/services/horizon
 bash ../../support/scripts/run_tests
 ```
 
@@ -92,7 +92,7 @@ and read about the available endpoints and see examples in the [Horizon API refe
 Congratulations! You can now run the full development cycle to build and test your code.
 1. Write code + tests
 2. Run tests
-3. Compile Horizon: `go install github.com/stellar/go/services/horizon`
+3. Compile Horizon: `go install github.com/cowry-network/go/services/horizon`
 4. Run Horizon (pointing at your running `stellar-core`)
 5. Try Horizon queries
 

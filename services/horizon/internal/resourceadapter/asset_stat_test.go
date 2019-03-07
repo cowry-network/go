@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	protocol "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/horizon/internal/db2/assets"
+	protocol "github.com/cowry-network/go/protocols/horizon"
+	"github.com/cowry-network/go/services/horizon/internal/db2/assets"
 	"github.com/stretchr/testify/assert"
 )
 

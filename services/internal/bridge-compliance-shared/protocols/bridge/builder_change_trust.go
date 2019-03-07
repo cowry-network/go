@@ -1,11 +1,11 @@
 package bridge
 
 import (
-	"github.com/stellar/go/amount"
-	b "github.com/stellar/go/build"
-	shared "github.com/stellar/go/services/internal/bridge-compliance-shared"
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/http/helpers"
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/protocols"
+	"github.com/cowry-network/go/amount"
+	b "github.com/cowry-network/go/build"
+	shared "github.com/cowry-network/go/services/internal/bridge-compliance-shared"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/http/helpers"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/protocols"
 )
 
 // ChangeTrustOperationBody represents change_trust operation

@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/http/helpers"
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/protocols"
-	complianceServer "github.com/stellar/go/services/internal/bridge-compliance-shared/protocols/compliance"
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/http/helpers"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/protocols"
+	complianceServer "github.com/cowry-network/go/services/internal/bridge-compliance-shared/protocols/compliance"
+	"github.com/cowry-network/go/support/errors"
 )
 
 var (

@@ -11,9 +11,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/stellar/go/support/config"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/log"
+	"github.com/cowry-network/go/support/config"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/log"
 	"golang.org/x/net/http2"
 	"gopkg.in/tylerb/graceful.v1"
 )

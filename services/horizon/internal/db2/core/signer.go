@@ -2,8 +2,8 @@ package core
 
 import (
 	sq "github.com/Masterminds/squirrel"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/xdr"
 )
 
 // SignersByAddress loads all signer rows for `addy`

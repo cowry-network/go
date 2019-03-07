@@ -3,10 +3,10 @@ package results
 import (
 	"testing"
 
-	"github.com/stellar/go/services/horizon/internal/db2/core"
-	"github.com/stellar/go/services/horizon/internal/db2/history"
-	"github.com/stellar/go/services/horizon/internal/test"
-	"github.com/stellar/go/services/horizon/internal/txsub"
+	"github.com/cowry-network/go/services/horizon/internal/db2/core"
+	"github.com/cowry-network/go/services/horizon/internal/db2/history"
+	"github.com/cowry-network/go/services/horizon/internal/test"
+	"github.com/cowry-network/go/services/horizon/internal/txsub"
 )
 
 func TestResultProvider(t *testing.T) {

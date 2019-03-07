@@ -4,12 +4,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/stellar/go/clients/federation"
-	"github.com/stellar/go/clients/stellartoml"
-	"github.com/stellar/go/services/compliance/internal/config"
-	"github.com/stellar/go/services/compliance/internal/crypto"
-	"github.com/stellar/go/services/compliance/internal/db"
-	"github.com/stellar/go/support/http"
+	"github.com/cowry-network/go/clients/federation"
+	"github.com/cowry-network/go/clients/stellartoml"
+	"github.com/cowry-network/go/services/compliance/internal/config"
+	"github.com/cowry-network/go/services/compliance/internal/crypto"
+	"github.com/cowry-network/go/services/compliance/internal/db"
+	"github.com/cowry-network/go/support/http"
 )
 
 // RequestHandler implements compliance server request handlers

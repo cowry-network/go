@@ -108,7 +108,7 @@ This release contains several bug fixes and improvements:
 * New `/operation_fee_stats` endpoint includes fee stats for the last 5 ledgers.
 * ["Trades"](https://www.stellar.org/developers/horizon/reference/endpoints/trades.html) endpoint can now be streamed.
 * In ["Trade Aggregations"](https://www.stellar.org/developers/horizon/reference/endpoints/trade_aggregations.html) endpoint, `offset` parameter has been added.
-* Path finding bugs have been fixed and the algorithm has been improved. Check [#719](https://github.com/stellar/go/pull/719) for more information.
+* Path finding bugs have been fixed and the algorithm has been improved. Check [#719](https://github.com/cowry-network/go/pull/719) for more information.
 * Connections (including streams) are closed after timeout defined using `--connection-timeout` CLI param or `CONNECTION_TIMEOUT` environment variable. If Horizon is behind a load balancer with idle timeout set, it is recommended to set this to a value equal a few seconds less than idle timeout so streams can be properly closed by Horizon.
 * Streams have been improved to check for updates every `--sse-update-frequency` CLI param or `SSE_UPDATE_FREQUENCY` environment variable seconds. If a new ledger has been closed in this period, new events will be sent to a stream. Previously streams checked for new events every 1 second, even when there were no new ledgers.
 * Rate limiting algorithm has been changed to [GCRA](https://brandur.org/rate-limiting#gcra).
@@ -252,7 +252,7 @@ This release is a bug fix release for v0.12.0.  *Please see the upgrade notes be
 
 ### Bug fixes
 
-- Fixed an issue caused by un-migrated trade rows. (https://github.com/stellar/go/issues/357)
+- Fixed an issue caused by un-migrated trade rows. (https://github.com/cowry-network/go/issues/357)
 - Command line flags are now useable for subcommands of horizon.
 
 
@@ -302,7 +302,7 @@ Since this release changes both the schema and the data ingestion system, we rec
 - The ingestion system can now properly import envelopes that contain signatures that are zero-length strings.
 - BREAKING CHANGE: specifying a `limit` of `0` now triggers an error instead of interpreting the value to mean "use the default limit".
 - Requests that ask for more records than the maximum page size now trigger a bad request error, instead of an internal server error.
-- Upstream bug fixes to xdr decoding from `github.com/stellar/go`.
+- Upstream bug fixes to xdr decoding from `github.com/cowry-network/go`.
 
 ### Changed
 

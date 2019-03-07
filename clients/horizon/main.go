@@ -12,9 +12,9 @@ import (
 	"net/url"
 	"sync"
 
-	"github.com/stellar/go/build"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/build"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/xdr"
 )
 
 // DefaultTestNetClient is a default client to connect to test network

@@ -3,8 +3,8 @@ package history
 import (
 	"testing"
 
-	"github.com/stellar/go/services/horizon/internal/db2"
-	"github.com/stellar/go/services/horizon/internal/test"
+	"github.com/cowry-network/go/services/horizon/internal/db2"
+	"github.com/cowry-network/go/services/horizon/internal/test"
 )
 
 func TestOperationQueries(t *testing.T) {

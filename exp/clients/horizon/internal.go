@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/support/errors"
 )
 
 func decodeResponse(resp *http.Response, object interface{}) (err error) {

@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/stellar/go/support/db/dbtest"
-	"github.com/stellar/go/support/http/httptest"
+	"github.com/cowry-network/go/support/db/dbtest"
+	"github.com/cowry-network/go/support/http/httptest"
 )
 
 func TestHandler(t *testing.T) {

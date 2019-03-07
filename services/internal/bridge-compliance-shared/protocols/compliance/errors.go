@@ -3,7 +3,7 @@ package compliance
 import (
 	"net/http"
 
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/http/helpers"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/http/helpers"
 )
 
 var (

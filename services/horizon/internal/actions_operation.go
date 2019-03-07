@@ -4,16 +4,16 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/stellar/go/services/horizon/internal/actions"
-	"github.com/stellar/go/services/horizon/internal/db2"
-	"github.com/stellar/go/services/horizon/internal/db2/history"
-	"github.com/stellar/go/services/horizon/internal/ledger"
-	"github.com/stellar/go/services/horizon/internal/render/problem"
-	"github.com/stellar/go/services/horizon/internal/render/sse"
-	"github.com/stellar/go/services/horizon/internal/resourceadapter"
-	"github.com/stellar/go/services/horizon/internal/toid"
-	"github.com/stellar/go/support/render/hal"
-	supportProblem "github.com/stellar/go/support/render/problem"
+	"github.com/cowry-network/go/services/horizon/internal/actions"
+	"github.com/cowry-network/go/services/horizon/internal/db2"
+	"github.com/cowry-network/go/services/horizon/internal/db2/history"
+	"github.com/cowry-network/go/services/horizon/internal/ledger"
+	"github.com/cowry-network/go/services/horizon/internal/render/problem"
+	"github.com/cowry-network/go/services/horizon/internal/render/sse"
+	"github.com/cowry-network/go/services/horizon/internal/resourceadapter"
+	"github.com/cowry-network/go/services/horizon/internal/toid"
+	"github.com/cowry-network/go/support/render/hal"
+	supportProblem "github.com/cowry-network/go/support/render/problem"
 )
 
 // This file contains the actions:

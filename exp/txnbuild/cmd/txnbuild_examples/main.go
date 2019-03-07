@@ -8,11 +8,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/stellar/go/clients/horizon"
-	"github.com/stellar/go/exp/txnbuild"
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/network"
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/clients/horizon"
+	"github.com/cowry-network/go/exp/txnbuild"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/network"
+	"github.com/cowry-network/go/support/errors"
 )
 
 type key struct {

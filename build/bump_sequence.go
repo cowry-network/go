@@ -1,8 +1,8 @@
 package build
 
 import (
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/xdr"
 )
 
 // BumpSequence groups the creation of a new BumpSequenceBuilder with a call

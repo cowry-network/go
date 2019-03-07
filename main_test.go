@@ -7,10 +7,10 @@ import (
 	"log"
 	"strings"
 
-	b "github.com/stellar/go/build"
-	"github.com/stellar/go/hash"
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/xdr"
+	b "github.com/cowry-network/go/build"
+	"github.com/cowry-network/go/hash"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/xdr"
 )
 
 // ExampleDecodeTransaction shows the lowest-level process to decode a base64

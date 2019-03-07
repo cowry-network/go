@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/stellar/go/services/horizon/internal/db2/core"
-	"github.com/stellar/go/support/db"
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/services/horizon/internal/db2/core"
+	"github.com/cowry-network/go/support/db"
+	"github.com/cowry-network/go/support/errors"
 )
 
 // Load runs queries against `core` to fill in the records of the bundle.
@@ -17,7 +17,7 @@ func (lb *LedgerBundle) Load(db *db.Session) error {
 	if err != nil {
 		// Remove when Horizon is able to handle gaps in stellar-core DB.
 		// More info:
-		// * https://github.com/stellar/go/issues/335
+		// * https://github.com/cowry-network/go/issues/335
 		// * https://www.stellar.org/developers/software/known-issues.html#gaps-detected
 		if err == sql.ErrNoRows {
 			return errors.New(fmt.Sprintf("Gap detected in stellar-core database (ledger=%d). More information: https://www.stellar.org/developers/software/known-issues.html#gaps-detected", lb.Sequence))

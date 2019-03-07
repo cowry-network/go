@@ -6,7 +6,7 @@ import (
 	stdLog "log"
 
 	migrate "github.com/rubenv/sql-migrate"
-	"github.com/stellar/go/support/db"
+	"github.com/cowry-network/go/support/db"
 )
 
 //go:generate go-bindata -ignore .+\.go$ -pkg schema -o bindata.go ./...

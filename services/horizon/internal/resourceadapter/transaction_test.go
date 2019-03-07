@@ -3,9 +3,9 @@ package resourceadapter
 import (
 	"testing"
 
-	. "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/horizon/internal/db2/history"
-	"github.com/stellar/go/support/test"
+	. "github.com/cowry-network/go/protocols/horizon"
+	"github.com/cowry-network/go/services/horizon/internal/db2/history"
+	"github.com/cowry-network/go/support/test"
 	"github.com/stretchr/testify/assert"
 )
 

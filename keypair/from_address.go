@@ -1,8 +1,8 @@
 package keypair
 
 import (
-	"github.com/stellar/go/strkey"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/strkey"
+	"github.com/cowry-network/go/xdr"
 
 	"golang.org/x/crypto/ed25519"
 )

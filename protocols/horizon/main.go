@@ -10,11 +10,11 @@ import (
 	"encoding/base64"
 	"encoding/json"
 
-	"github.com/stellar/go/protocols/horizon/base"
-	"github.com/stellar/go/strkey"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/render/hal"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/protocols/horizon/base"
+	"github.com/cowry-network/go/strkey"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/render/hal"
+	"github.com/cowry-network/go/xdr"
 )
 
 // KeyTypeNames maps from strkey version bytes into json string values to use in

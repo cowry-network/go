@@ -5,9 +5,9 @@ import (
 	"errors"
 	"sync"
 
-	. "github.com/stellar/go/build"
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/services/horizon/internal/txsub"
+	. "github.com/cowry-network/go/build"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/services/horizon/internal/txsub"
 )
 
 // Bot represents the friendbot subsystem.

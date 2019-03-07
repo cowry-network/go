@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/stellar/go/services/horizon/internal/db2/core"
-	"github.com/stellar/go/services/horizon/internal/test"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/services/horizon/internal/db2/core"
+	"github.com/cowry-network/go/services/horizon/internal/test"
+	"github.com/cowry-network/go/xdr"
 )
 
 func TestOrderBook(t *testing.T) {

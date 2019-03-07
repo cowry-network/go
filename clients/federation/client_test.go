@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stellar/go/clients/horizon"
-	"github.com/stellar/go/clients/stellartoml"
-	"github.com/stellar/go/support/http/httptest"
+	"github.com/cowry-network/go/clients/horizon"
+	"github.com/cowry-network/go/clients/stellartoml"
+	"github.com/cowry-network/go/support/http/httptest"
 	"github.com/stretchr/testify/assert"
 )
 

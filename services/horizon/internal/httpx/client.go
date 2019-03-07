@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	horizonContext "github.com/stellar/go/services/horizon/internal/context"
+	horizonContext "github.com/cowry-network/go/services/horizon/internal/context"
 )
 
 var defaultClient = &http.Client{}

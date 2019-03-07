@@ -14,8 +14,8 @@ import (
 	"strings"
 
 	"github.com/howeyc/gopass"
-	"github.com/stellar/go/build"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/build"
+	"github.com/cowry-network/go/xdr"
 )
 
 var in *bufio.Reader

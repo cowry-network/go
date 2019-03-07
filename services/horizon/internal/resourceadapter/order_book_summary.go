@@ -3,9 +3,9 @@ package resourceadapter
 import (
 	"context"
 
-	. "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/horizon/internal/db2/core"
-	"github.com/stellar/go/xdr"
+	. "github.com/cowry-network/go/protocols/horizon"
+	"github.com/cowry-network/go/services/horizon/internal/db2/core"
+	"github.com/cowry-network/go/xdr"
 )
 
 func PopulateOrderBookSummary(

@@ -3,8 +3,8 @@ package txnbuild
 import (
 	"testing"
 
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/network"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/network"
 	"github.com/stretchr/testify/assert"
 )
 

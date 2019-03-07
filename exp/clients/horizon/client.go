@@ -1,7 +1,7 @@
 package horizonclient
 
 import (
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/support/errors"
 )
 
 func sendRequest(hr HorizonRequest, c Client, a interface{}) (err error) {

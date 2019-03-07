@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/support/errors"
 )
 
 // Raw returns the decoded, raw value of the account data

@@ -9,11 +9,11 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi"
-	"github.com/stellar/go/services/horizon/internal/ledger"
-	"github.com/stellar/go/services/horizon/internal/test"
-	"github.com/stellar/go/services/horizon/internal/toid"
-	"github.com/stellar/go/support/render/problem"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/services/horizon/internal/ledger"
+	"github.com/cowry-network/go/services/horizon/internal/test"
+	"github.com/cowry-network/go/services/horizon/internal/toid"
+	"github.com/cowry-network/go/support/render/problem"
+	"github.com/cowry-network/go/xdr"
 )
 
 func TestGetAccountID(t *testing.T) {
@@ -290,7 +290,7 @@ func TestGetPageQuery(t *testing.T) {
 	_ = action.GetPageQuery()
 	tt.Assert.Error(action.Err)
 
-	// regression: https://github.com/stellar/go/services/horizon/internal/issues/372
+	// regression: https://github.com/cowry-network/go/services/horizon/internal/issues/372
 	// (limit of 0 turns into 10)
 	makeAction("/?limit=0", nil)
 	_ = action.GetPageQuery()

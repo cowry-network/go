@@ -12,11 +12,11 @@ import (
 	metrics "github.com/rcrowley/go-metrics"
 	"github.com/rs/cors"
 	"github.com/sebest/xff"
-	"github.com/stellar/go/services/horizon/internal/db2"
-	hProblem "github.com/stellar/go/services/horizon/internal/render/problem"
-	"github.com/stellar/go/services/horizon/internal/render/sse"
-	"github.com/stellar/go/services/horizon/internal/txsub/sequence"
-	"github.com/stellar/go/support/render/problem"
+	"github.com/cowry-network/go/services/horizon/internal/db2"
+	hProblem "github.com/cowry-network/go/services/horizon/internal/render/problem"
+	"github.com/cowry-network/go/services/horizon/internal/render/sse"
+	"github.com/cowry-network/go/services/horizon/internal/txsub/sequence"
+	"github.com/cowry-network/go/support/render/problem"
 	"github.com/throttled/throttled"
 )
 

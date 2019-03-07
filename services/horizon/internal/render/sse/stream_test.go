@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/stellar/go/support/test"
+	"github.com/cowry-network/go/support/test"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )

@@ -7,9 +7,9 @@ import (
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcd/txscript"
 	"github.com/btcsuite/btcd/wire"
-	"github.com/stellar/go/services/bifrost/common"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/log"
+	"github.com/cowry-network/go/services/bifrost/common"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/log"
 )
 
 func (l *Listener) Start() error {

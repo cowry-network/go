@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stellar/go/keypair"
+	"github.com/cowry-network/go/keypair"
 	"github.com/stretchr/testify/assert"
 )
 

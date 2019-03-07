@@ -3,17 +3,17 @@ package horizon
 import (
 	"net/http"
 
-	"github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/horizon/internal/actions"
-	"github.com/stellar/go/services/horizon/internal/db2"
-	"github.com/stellar/go/services/horizon/internal/db2/history"
-	hProblem "github.com/stellar/go/services/horizon/internal/render/problem"
-	"github.com/stellar/go/services/horizon/internal/render/sse"
-	"github.com/stellar/go/services/horizon/internal/resourceadapter"
-	"github.com/stellar/go/services/horizon/internal/txsub"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/support/render/hal"
-	"github.com/stellar/go/support/render/problem"
+	"github.com/cowry-network/go/protocols/horizon"
+	"github.com/cowry-network/go/services/horizon/internal/actions"
+	"github.com/cowry-network/go/services/horizon/internal/db2"
+	"github.com/cowry-network/go/services/horizon/internal/db2/history"
+	hProblem "github.com/cowry-network/go/services/horizon/internal/render/problem"
+	"github.com/cowry-network/go/services/horizon/internal/render/sse"
+	"github.com/cowry-network/go/services/horizon/internal/resourceadapter"
+	"github.com/cowry-network/go/services/horizon/internal/txsub"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/support/render/hal"
+	"github.com/cowry-network/go/support/render/problem"
 )
 
 // This file contains the actions:

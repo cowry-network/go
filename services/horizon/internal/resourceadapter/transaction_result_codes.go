@@ -3,8 +3,8 @@ package resourceadapter
 import (
 	"context"
 
-	. "github.com/stellar/go/protocols/horizon"
-	"github.com/stellar/go/services/horizon/internal/txsub"
+	. "github.com/cowry-network/go/protocols/horizon"
+	"github.com/cowry-network/go/services/horizon/internal/txsub"
 )
 
 // Populate fills out the details

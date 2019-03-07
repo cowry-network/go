@@ -5,10 +5,10 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/network"
-	"github.com/stellar/go/support/errors"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/network"
+	"github.com/cowry-network/go/support/errors"
+	"github.com/cowry-network/go/xdr"
 )
 
 // TODO: Replace use of Horizon Account with simpler Account object here

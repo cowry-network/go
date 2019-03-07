@@ -1,9 +1,9 @@
 package horizon
 
 import (
-	"github.com/stellar/go/services/horizon/internal/actions"
-	hProblem "github.com/stellar/go/services/horizon/internal/render/problem"
-	"github.com/stellar/go/support/render/problem"
+	"github.com/cowry-network/go/services/horizon/internal/actions"
+	hProblem "github.com/cowry-network/go/services/horizon/internal/render/problem"
+	"github.com/cowry-network/go/support/render/problem"
 )
 
 // Interface verification

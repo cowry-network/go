@@ -1,9 +1,9 @@
 package bridge
 
 import (
-	b "github.com/stellar/go/build"
-	shared "github.com/stellar/go/services/internal/bridge-compliance-shared"
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/http/helpers"
+	b "github.com/cowry-network/go/build"
+	shared "github.com/cowry-network/go/services/internal/bridge-compliance-shared"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/http/helpers"
 )
 
 // AccountMergeOperationBody represents account_merge operation

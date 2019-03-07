@@ -6,13 +6,13 @@ import (
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/stellar/go/services/horizon/internal/db2/core"
-	"github.com/stellar/go/services/horizon/internal/db2/history"
-	"github.com/stellar/go/services/horizon/internal/db2/sqx"
-	"github.com/stellar/go/services/horizon/internal/test"
-	testDB "github.com/stellar/go/services/horizon/internal/test/db"
-	"github.com/stellar/go/support/db"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/services/horizon/internal/db2/core"
+	"github.com/cowry-network/go/services/horizon/internal/db2/history"
+	"github.com/cowry-network/go/services/horizon/internal/db2/sqx"
+	"github.com/cowry-network/go/services/horizon/internal/test"
+	testDB "github.com/cowry-network/go/services/horizon/internal/test/db"
+	"github.com/cowry-network/go/support/db"
+	"github.com/cowry-network/go/xdr"
 	"github.com/stretchr/testify/assert"
 )
 

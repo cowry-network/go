@@ -3,9 +3,9 @@ package operations
 import (
 	"time"
 
-	"github.com/stellar/go/protocols/horizon/base"
-	"github.com/stellar/go/support/render/hal"
-	"github.com/stellar/go/xdr"
+	"github.com/cowry-network/go/protocols/horizon/base"
+	"github.com/cowry-network/go/support/render/hal"
+	"github.com/cowry-network/go/xdr"
 )
 
 // OperationTypeNames maps from operation type to the string used to represent that type

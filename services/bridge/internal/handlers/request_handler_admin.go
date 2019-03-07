@@ -9,12 +9,12 @@ import (
 
 	"github.com/go-chi/chi"
 	log "github.com/sirupsen/logrus"
-	"github.com/stellar/go/clients/horizon"
-	"github.com/stellar/go/protocols/compliance"
-	"github.com/stellar/go/services/bridge/internal/db"
-	"github.com/stellar/go/services/internal/bridge-compliance-shared/http/helpers"
-	callback "github.com/stellar/go/services/internal/bridge-compliance-shared/protocols/compliance"
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/clients/horizon"
+	"github.com/cowry-network/go/protocols/compliance"
+	"github.com/cowry-network/go/services/bridge/internal/db"
+	"github.com/cowry-network/go/services/internal/bridge-compliance-shared/http/helpers"
+	callback "github.com/cowry-network/go/services/internal/bridge-compliance-shared/protocols/compliance"
+	"github.com/cowry-network/go/support/errors"
 )
 
 // AdminReceivedPayment implements /admin/received-payments/{id} endpoint

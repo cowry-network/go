@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"sync"
 
-	b "github.com/stellar/go/build"
-	"github.com/stellar/go/clients/horizon"
-	"github.com/stellar/go/keypair"
-	"github.com/stellar/go/support/errors"
+	b "github.com/cowry-network/go/build"
+	"github.com/cowry-network/go/clients/horizon"
+	"github.com/cowry-network/go/keypair"
+	"github.com/cowry-network/go/support/errors"
 )
 
 // TxResult is the result from the asynchronous submit transaction method over a channel

@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/lib/pq"
-	"github.com/stellar/go/services/bifrost/queue"
-	"github.com/stellar/go/services/bifrost/sse"
-	"github.com/stellar/go/support/db"
-	"github.com/stellar/go/support/errors"
+	"github.com/cowry-network/go/services/bifrost/queue"
+	"github.com/cowry-network/go/services/bifrost/sse"
+	"github.com/cowry-network/go/support/db"
+	"github.com/cowry-network/go/support/errors"
 )
 
 const (
